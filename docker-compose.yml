@@ -1,0 +1,61 @@
+# Configuração no .env da raiz: ele é montado como o .env do Laravel e alimenta o MySQL.
+x-app: &app
+  image: caio-pina-api
+  pull_policy: never
+  restart: unless-stopped
+  volumes:
+    - ./.env:/var/www/app/.env
+    - storage:/var/www/app/storage/app
+    # Front montado direto: editar a view, o CSS ou o JS aparece sem rebuild
+    - ./resources/views:/var/www/app/resources/views
+    - ./public/css:/var/www/app/public/css
+    - ./public/js:/var/www/app/public/js
+    - ./public/sw.js:/var/www/app/public/sw.js
+    - ./routes/web.php:/var/www/app/routes/web.php
+  depends_on:
+    mysql:
+      condition: service_healthy
+
+services:
+  api:
+    <<: *app
+    build: .
+    environment:
+      RODAR_MIGRACOES: "1"
+    ports:
+      - "8000:8000"
+
+  fila:
+    <<: *app
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    depends_on:
+      api:
+        condition: service_started
+
+  agendador:
+    <<: *app
+    command: php artisan schedule:work
+    depends_on:
+      api:
+        condition: service_started
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      TZ: ${APP_TIMEZONE}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      retries: 20
+
+volumes:
+  mysql:
+  storage:

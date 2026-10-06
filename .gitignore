@@ -1,0 +1,19 @@
+# Segredos: cada ambiente tem o seu (use o .env.exemplo como modelo)
+.env
+.env.*
+!.env.exemplo
+
+# Gerados pelo Laravel/Composer/Node (o projeto completo é montado pelo instalar.sh)
+/vendor
+/node_modules
+/storage
+*.log
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Configuração local do Claude Code
+.claude/
