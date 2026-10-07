@@ -259,7 +259,8 @@ const IC={
   expand:sv('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',20),
   field:sv('<rect x="2" y="5" width="20" height="14" rx="1"/><path d="M12 5v14"/><circle cx="12" cy="12" r="3"/>',18)
 };
-const ESC=sz=>`<svg width="${sz}" height="${Math.round(sz*1.1)}" viewBox="0 0 36 40" aria-hidden="true"><path d="M18 2 L33 7 V19 C33 29 26 35 18 38 C10 35 3 29 3 19 V7 Z" fill="#F7C600"/><path d="M18 6 L29 9.7 V19 C29 26.6 23.7 31.2 18 33.6 C12.3 31.2 7 26.6 7 19 V9.7 Z" fill="none" stroke="#0A0A08" stroke-width="1.5"/><text x="18" y="24.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-weight="800" font-size="13" fill="#0A0A08">CP</text></svg>`;
+// Logo da escolinha (public/logo.png, gerada a partir da arte original)
+const ESC=sz=>`<img src="/logo.png?v=2" width="${sz}" height="${sz}" alt="" aria-hidden="true" style="display:block;flex:none">`;
 const avatar=(a,sz)=>a&&a.foto?`<img class="av" src="${a.foto}" alt="" style="width:${sz}px;height:${sz}px">`:`<span class="av" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*.38)}px">${esc(a?iniciais(a.nome):'?')}</span>`;
 const catOpts=selId=>S.cats.map(c=>`<option value="${c.id}"${sel(c.id,selId)}>${c.nome} (${c.ini})</option>`).join('');
 const alunoOpts=(selId,apenasCat)=>S.cats.filter(c=>!apenasCat||c.id===apenasCat).map(c=>{const l=alunosCat(c.id);return l.length?`<optgroup label="${c.nome}">${l.map(a=>`<option value="${a.id}"${sel(a.id,selId)}>${esc(a.nome)}</option>`).join('')}</optgroup>`:'';}).join('');
@@ -271,7 +272,7 @@ function header(){
   if(ui.role==='aluno'){const a=al(ui.alunoAtual),n=a?naoLidas(a):0;
     extra=`<label class="sr" for="selAluno">Aluno</label><select id="selAluno" class="inp sm" data-ch="aluno">${alunoOpts(ui.alunoAtual)}</select><span class="uname">@${esc(a.login)}</span><button type="button" class="bell" data-a="tab" data-v="avisos" aria-label="Avisos${n?', '+n+' novos':''}">${IC.bell}${n?`<span class="dot">${n}</span>`:''}</button>`;}
   const live=S.live&&ui.role==='professor'&&ui.tela.professor!=='aovivo'?`<button type="button" class="btn y sm" data-a="tab" data-v="aovivo">Partida em andamento</button>`:'';
-  return `<header class="top"><div class="brand">${ESC(38)}<div><b>${esc(NOME_CURTO)}</b><small>Clínica de Futebol</small></div></div><div class="demo">${live}<span class="mut sm">Ver como</span><div class="seg" role="group" aria-label="Perfil">${roles.map(r=>`<button type="button" data-a="role" data-v="${r[0]}" aria-pressed="${ui.role===r[0]}">${r[1]}</button>`).join('')}</div>${extra}</div></header>`;
+  return `<header class="top"><div class="brand">${ESC(44)}<div><b>${esc(NOME_CURTO)}</b><small>Clínica de Futebol</small></div></div><div class="demo">${live}<span class="mut sm">Ver como</span><div class="seg" role="group" aria-label="Perfil">${roles.map(r=>`<button type="button" data-a="role" data-v="${r[0]}" aria-pressed="${ui.role===r[0]}">${r[1]}</button>`).join('')}</div>${extra}</div></header>`;
 }
 function navItems(){
   const a=al(ui.alunoAtual),nd=a?S.dicas.filter(d=>d.aluno===a.id&&!d.lida).length:0,na=a?naoLidas(a):0;
@@ -1550,11 +1551,11 @@ function header(){
   const papel=u.papel==='dono'?`<div class="seg" role="group" aria-label="Área">${[['dono','Gestão'],['professor','Treinos e jogos']].map(r=>`<button type="button" data-a="role" data-v="${r[0]}" aria-pressed="${ui.role===r[0]}">${r[1]}</button>`).join('')}</div>`:'';
   const live=S.live&&ui.role==='professor'&&ui.tela.professor!=='aovivo'?`<button type="button" class="btn y sm" data-a="tab" data-v="aovivo">Partida em andamento</button>`:'';
   const quem=u.papel==='responsavel'?'Responsável':u.papel==='aluno'?'Aluno':u.papel==='dono'?'Dono':'Professor';
-  return `<header class="top"><div class="brand">${ESC(38)}<div><b>${esc(NOME_CURTO)}</b><small>${esc(u.nome)} · ${quem}</small></div></div><div class="demo">${statusRede()}${live}${papel}${extra}<button type="button" class="btn o sm" data-a="logout">Sair</button></div></header>`;
+  return `<header class="top"><div class="brand">${ESC(44)}<div><b>${esc(NOME_CURTO)}</b><small>${esc(u.nome)} · ${quem}</small></div></div><div class="demo">${statusRede()}${live}${papel}${extra}<button type="button" class="btn o sm" data-a="logout">Sair</button></div></header>`;
 }
 function vLogin(){
   return `<div style="min-height:100vh;display:grid;place-items:center;padding:20px"><form class="card col" data-f="login" style="width:min(400px,100%);gap:16px;padding:24px">
-  <div class="row" style="gap:12px">${ESC(48)}<div><h1 style="font-size:30px">${esc(NOME_CURTO)}</h1><span class="mut sm">Clínica de Futebol</span></div></div>
+  <div class="col" style="align-items:center">${ESC(150)}<h1 class="sr">${esc(NOME)}</h1></div>
   <label class="f">Usuário ou celular<input class="inp" name="login" required autocomplete="username" autocapitalize="none" placeholder="joao.silva ou (18) 99999-9999"></label>
   <label class="f">Senha<input class="inp" type="password" name="senha" required autocomplete="current-password"></label>
   ${ui.erroLogin?`<p class="sm" style="color:var(--red)">${esc(ui.erroLogin)}</p>`:''}
@@ -1588,7 +1589,7 @@ function render(){
   if(!ui.user||ui.carregandoTudo){
     document.body.classList.remove('estadio','lzlock');
     const t=ui.toast?`<div class="toast" role="status">${esc(ui.toast)}</div>`:'';
-    if(ui.carregandoTudo){document.getElementById('app').innerHTML=`<div style="min-height:100vh;display:grid;place-items:center;text-align:center" role="status"><div class="col" style="align-items:center">${ESC(56)}<p class="mut">Carregando a escolinha…</p></div></div>`+t;return;}
+    if(ui.carregandoTudo){document.getElementById('app').innerHTML=`<div style="min-height:100vh;display:grid;place-items:center;text-align:center" role="status"><div class="col" style="align-items:center">${ESC(110)}<p class="mut">Carregando a escolinha…</p></div></div>`+t;return;}
     document.getElementById('app').innerHTML=(ui.user?'':vLogin())+vModal()+t;return;
   }
   renderLocal();

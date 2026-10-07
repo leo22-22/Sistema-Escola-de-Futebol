@@ -21,7 +21,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="{{ config('escolinha.nome_curto') }}">
-<link rel="icon" href="{{ asset('icone.svg') }}" type="image/svg+xml">
+<link rel="icon" href="{{ asset('icone-64.png') }}" type="image/png">
 <link rel="apple-touch-icon" href="{{ asset('icone-192.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -2,10 +2,10 @@
 // - Casca do app (página, CSS, JS, ícones): rede primeiro, cópia guardada quando não há sinal.
 // - Leituras da API (GET /api): rede primeiro; sem sinal, devolve a última resposta guardada com o cabeçalho X-Offline.
 // - Alterações (POST/PUT/DELETE) não passam por aqui: o app guarda numa fila e envia quando a conexão volta.
-const CACHE = 'caiopina-v3';
+const CACHE = 'caiopina-v4';
 const CACHE_API = 'caiopina-api';
 const CACHE_FONTES = 'caiopina-fontes';
-const CASCA = ['/', '/css/app.css', '/js/app.js', '/manifest.webmanifest', '/icone.svg', '/icone-192.png', '/icone-512.png'];
+const CASCA = ['/', '/css/app.css', '/js/app.js', '/manifest.webmanifest', '/logo.png', '/icone-64.png', '/icone-192.png', '/icone-512.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CASCA)).then(() => self.skipWaiting()));
